@@ -1,0 +1,1 @@
+# HashCompetition frontend
