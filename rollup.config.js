@@ -10,7 +10,10 @@ export default {
         format: 'esm',
     },
     plugins: [
-        resolve(),
+        resolve({
+            preferBuiltins: false,
+            browser: true,
+        }),
         commonjs(),
         typescript(),
         terser(),

@@ -1,4 +1,5 @@
 {
+  "name": "@xplart/pow-frontend",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w"
@@ -12,6 +13,8 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "preact": "^10.6.5"
+    "ethers": "^5.5.4",
+    "preact": "^10.6.5",
+    "@xplart/pow-onchain": "../pow-onchain"
   }
 }
