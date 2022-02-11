@@ -3,6 +3,7 @@
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
         "strict": true,
+        "esModuleInterop": true
     },
-    "files": ["src/index.tsx"],
+    "files": ["src/index.tsx"]
 }
