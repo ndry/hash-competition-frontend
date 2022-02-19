@@ -3,7 +3,9 @@
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
         "strict": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "Node"
     },
     "files": ["src/index.tsx"]
 }

@@ -1,123 +1,65 @@
-import _ from "lodash";
-import * as rx from "rxjs";
-import { useEffect, useState } from "preact/hooks";
-import update, { Spec } from 'immutability-helper';
-import { ethers } from "ethers";
-import { scoreSolution } from "./utils";
+import { useRxSubscribe } from "./react-utils/useRxSubscribe";
+import { usePromise } from "./react-utils/usePromise";
+import { BytesLike } from "ethers";
+import { block$, provider } from "./provider";
+import { HashCompetition } from "@xplart/hash-competition-onchain/typechain-types/HashCompetition";
+import { Waiting } from "./react-utils/Waiting";
+import { Hex } from "./Hex";
+import { hexdotify } from "./eth-utils";
+import { Score } from "./Score";
+import { def } from "./utils";
+import { css, cx } from "@emotion/css";
+import * as style from "./style";
 
-const _scoreSolution = scoreSolution("0x0000000000000000000000000000000000000000");
-const solver = (() => {
-    const generateSolution = () => {
-        return ethers.utils.randomBytes(32);
-    };
-    const stringifyCompare = function <T>(a: T, b: T) { return JSON.stringify(a) === JSON.stringify(b) };
-
-    let task = undefined as string | undefined;
-    const solution$ = new rx.Subject<{
-        task: string,
-        solution: string,
-    }>();
-
-    setInterval(() => {
-        if (!task) { return; }
-        for (let i = 0; i < 50; i++) {
-            solution$.next({
-                task: task,
-                solution: ethers.utils.hexlify(generateSolution()),
-            });
-        }
-    }, 50);
-
-    return {
-        setTask(_task: string) {
-            task = _task;
-        },
-        solution$: solution$.pipe(
-            rx.scan((acc, value) => {
-                if (acc.task !== value.task) {
-                    return value;
-                }
-                if (_scoreSolution(acc.task, acc.solution) < _scoreSolution(value.task, value.solution)) {
-                    return value;
-                }
-                return acc;
-            }),
-            rx.distinctUntilChanged(stringifyCompare),
-        ),
+const _css = css`
+    & {
+        border: 1px solid;
+        animation: flash0 1s;
+        padding: 0.5em 0.5ch;
+        margin: 1px;
     }
-})();
-
-type ClaimedSolutions = {
-    solution: string;
-    claimStatus: "onWire" | "inPool" | "onChain" | "rejected";
-    submissionStatus: "onWire" | "inPool" | "onChain" | "rejected";
-};
-type TaskState = {
-    bestSolution?: string;
-    claimedSolutions: ClaimedSolutions[];
-};
-
+    &.selected {
+        background-color: rgb(237, 255, 234);
+    }
+`;
 
 export function Task({
-    block,
-    lastBlockNumber,
-    isPinned,
-
-    onPin,
+    hashCompetition,
+    blockNumber,
+    selectedHash,
+    onSolve,
 }: {
-    block: ethers.providers.Block,
-    lastBlockNumber: number,
-    isPinned: boolean;
-
-    onPin: (isPinned: boolean) => void,
+    hashCompetition: HashCompetition
+    blockNumber: number,
+    selectedHash: BytesLike | undefined,
+    onSolve: (task: BytesLike) => void,
 }) {
-    const [state, setState] = useState({
-        claimedSolutions: [] as ClaimedSolutions[]
-    } as TaskState);
-    const updateState = (spec: Spec<typeof state, never>) => 
-        setState(state => update(state, spec));
+    const block = usePromise(() => provider.getBlock(blockNumber), []);
+    const newestBlockNumber = useRxSubscribe(() => block$, []);
+    const bestPublicScore = usePromise(async () => {
+        if (!block) { return; }
+        const at = await hashCompetition.activeTasks(block.hash);
+        return at.score;
+    }, [block, newestBlockNumber]);
 
-        
-    const relativeNumber = lastBlockNumber - block.number;
-    const relativeNumberStr = relativeNumber >= 10
-        ? "##"
-        : relativeNumber.toString().padStart(2, "0");
+    const selected = block && (selectedHash === block.hash);
 
-    useEffect(() => {
-        const subscription = solver.solution$.pipe(
-            rx.filter(({ task }) => task === block.hash)
-        ).subscribe(({ solution }) => {
-            updateState({ bestSolution: { $set: solution } });
-            onPin(true);
-        });
-        return () => subscription.unsubscribe();
-    }, []);
+    const solveBtn = <button disabled={!block || selected} onClick={block && (() => onSolve(block.hash))}>Solve</button>;
+    const hashEl = block ? <Hex bytes={block.hash} transform={hexdotify} /> : <Waiting />;
+    const relativeNumberStr = (!def(newestBlockNumber) || !block)
+        ? <Waiting />
+        : (() => {
+            const relativeNumber = newestBlockNumber - block.number;
+            const relativeNumberStr = relativeNumber.toString().padStart(3, "·");
+            return relativeNumberStr;
+        })();
 
-    return <div style={{ border: "1px solid" }}>
-        {isPinned
-            ? <button onClick={() => onPin(false)}>Unpin</button>
-            : <button onClick={() => onPin(true)}>Pin</button>}
-        <h2 style={{ fontFamily: "Courier" }}>{relativeNumberStr}: {block.hash}</h2>
-        <div>Active: {relativeNumber < 10 ? "yes" : "no"}</div>
-        <button onClick={() => solver.setTask(block.hash)}>Generate solution</button>
-        {state.bestSolution &&
-            <div>
-                <div style={{ fontFamily: "Courier" }}>
-                    {state.bestSolution} - Score: {_scoreSolution(block.hash, state.bestSolution)}
-                </div>
-                <button>Claim solution</button>
-            </div>}
+    return <div className={cx("Task", _css, { selected })}>
+        <div>{solveBtn} {relativeNumberStr}: {hashEl}</div>
         <div>
-            <h3>Claims:</h3>
-            <div>
-                <h4>claim 1</h4>
-                <button disabled>Submit solution</button>
-            </div>
-            <div>
-                <h4>claim 2</h4>
-                <button disabled>Submit solution</button>
-            </div>
+            <span className={style.term} title="The score of the best solution for the given task submitted so far">
+                Public score
+            </span>: {!def(bestPublicScore) ? <Waiting /> : <Score score={bestPublicScore} />}
         </div>
-        <button disabled>Claim reward</button>
     </div>;
 }

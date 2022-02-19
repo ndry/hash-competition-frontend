@@ -1,0 +1,10 @@
+{
+    "imports": {
+        "lodash": "https://unpkg.com/@esm-bundle/lodash@4.17.21/esm/index.js",
+        "rxjs": "https://unpkg.com/@esm-bundle/rxjs@7.5.4/esm/es2015/rxjs.min.js",
+        "preact": "https://unpkg.com/preact@10.6.5/dist/preact.mjs",
+        "preact/hooks": "https://unpkg.com/preact@10.6.5/hooks/dist/hooks.mjs",
+        "@emotion/css": "https://unpkg.com/@esm-bundle/emotion@10.0.27/esm/emotion.js",
+        "ethers": "https://unpkg.com/ethers@5.5.4/dist/ethers.esm.js"
+    }
+}

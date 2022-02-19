@@ -3,10 +3,13 @@
 
 <head>
     <title>HashCompetition</title>
-    <script type="module" src="./index.bundle.js"></script>
 </head>
 
 <body>
+    <script type="importmap" src="./importmap.min.json"></script>
+    <script src="https://unpkg.com/es-module-shims@0.12.8/dist/es-module-shims.min.js"></script>
+
+    <script defer type="module" src="./index.bundle.js"></script>
 </body>
 
 </html>
