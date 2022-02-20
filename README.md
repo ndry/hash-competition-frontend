@@ -1,5 +1,7 @@
 # HashCompetition frontend
 
+An example frontend for [HashCompetition smart contract](https://github.com/xplart/hash-competition-onchain)
+
 ## Run locally
 
 `npm i`
