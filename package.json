@@ -3,7 +3,9 @@
   "scripts": {
     "hardhat": "set NODE_OPTIONS=--openssl-legacy-provider && hardhat",
     "build": "rollup -c",
-    "start-dev": "concurrently -k -n hardhat,rollup,http \"npm:hardhat node \" \"rollup -c -w\" \"http-server -p 3680\"",
+    "build-prod": "set NODE_ENV=production && npm run build",
+    "start": "concurrently -k -n hardhat,rollup,http \"npm:hardhat node \" \"rollup -c -w\" \"http-server -p 3680\"",
+    "start-prod": "set NODE_ENV=production && npm run start",
     "ts": "ts-node -P ./scripts.tsconfig.json",
     "deploy-contract-local": "npm run ts ./deploy-contract.ts"
   },

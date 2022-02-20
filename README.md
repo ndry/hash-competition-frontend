@@ -4,7 +4,7 @@
 
 `npm i`
 
-`npm run start-dev` - start hardhat, http-server and build watcher
+`npm run start` - start hardhat, http-server and build watcher
 
 `npm run deploy-contract-local` - deploy contract while hardhat is running
 
