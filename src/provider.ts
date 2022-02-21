@@ -1,7 +1,7 @@
 import * as rx from "rxjs";
 import { ethers } from "ethers";
-import { HashCompetition } from "@xplart/hash-competition-onchain/typechain-types/HashCompetition";
-import { abi } from "@xplart/hash-competition-onchain/artifacts/contracts/HashCompetition.sol/HashCompetition.json";
+import { HashCompetition } from "@ndry/hash-competition-onchain/typechain-types/HashCompetition";
+import { abi } from "@ndry/hash-competition-onchain/artifacts/contracts/HashCompetition.sol/HashCompetition.json";
 
 
 

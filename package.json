@@ -1,5 +1,5 @@
 {
-  "name": "@xplart/hash-competition-frontend",
+  "name": "hash-competition-frontend",
   "scripts": {
     "hardhat": "set NODE_OPTIONS=--openssl-legacy-provider && hardhat",
     "build": "rollup -c",
@@ -16,7 +16,7 @@
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
-    "@xplart/hash-competition-onchain": "github:xplart/hash-competition-onchain",
+    "@ndry/hash-competition-onchain": "github:ndry/hash-competition-onchain",
     "concurrently": "^7.0.0",
     "eslint": "^8.9.0",
     "eslint-plugin-import": "^2.25.4",

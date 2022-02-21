@@ -9,7 +9,7 @@ import { block$, provider } from "./provider";
 import _ from "lodash";
 import { Score } from "./Score";
 import { def } from "./utils";
-import { HashCompetition } from "@xplart/hash-competition-onchain/typechain-types/HashCompetition";
+import { HashCompetition } from "@ndry/hash-competition-onchain/typechain-types/HashCompetition";
 import * as style from "./style";
 import { css, cx } from "@emotion/css";
 import { Transaction, useTransaction } from "./Transaction";

@@ -9,7 +9,7 @@ import { Hex } from "./Hex";
 import { Score } from "./Score";
 import { Waiting } from "./react-utils/Waiting";
 import { block$ } from "./provider";
-import { HashCompetition } from "@xplart/hash-competition-onchain/typechain-types/HashCompetition";
+import { HashCompetition } from "@ndry/hash-competition-onchain/typechain-types/HashCompetition";
 const { hexlify, keccak256 } = ethers.utils;
 
 export function Solver({

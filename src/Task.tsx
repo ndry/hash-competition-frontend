@@ -2,7 +2,7 @@ import { useRxSubscribe } from "./react-utils/useRxSubscribe";
 import { usePromise } from "./react-utils/usePromise";
 import { BytesLike } from "ethers";
 import { block$, provider } from "./provider";
-import { HashCompetition } from "@xplart/hash-competition-onchain/typechain-types/HashCompetition";
+import { HashCompetition } from "@ndry/hash-competition-onchain/typechain-types/HashCompetition";
 import { Waiting } from "./react-utils/Waiting";
 import { Hex } from "./Hex";
 import { hexdotify } from "./eth-utils";

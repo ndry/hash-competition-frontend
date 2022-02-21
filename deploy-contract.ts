@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { HashCompetition__factory } from "@xplart/hash-competition-onchain/typechain-types/factories/HashCompetition__factory";
+import { HashCompetition__factory } from "@ndry/hash-competition-onchain/typechain-types/factories/HashCompetition__factory";
 
 async function main() {
     const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");

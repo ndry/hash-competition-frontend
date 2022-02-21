@@ -8,7 +8,7 @@ import injectProcessEnv from 'rollup-plugin-inject-process-env';
 import { packages } from "./package-lock.json";
 
 
-const isDev = process.env.NODE_ENV.trim() !== 'production';
+const isDev = process.env.NODE_ENV?.trim() !== 'production';
 const importmap = (() => {
     const version = (name) => packages["node_modules/" + name].version;
     const nameAtVesrion = name => /.@/.test(name) ? name : `${name}@${version(name)}`;
